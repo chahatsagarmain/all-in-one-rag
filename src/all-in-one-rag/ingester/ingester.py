@@ -1,7 +1,7 @@
 from utils.utils import read_file , read_markdown
 from markdown import markdown
 from pypdf import PdfReader
-from models.ingestor import Ingester
+from models.ingestor import Ingester , Content
 
 
 class DataSourceIngester(Ingester):
@@ -17,7 +17,7 @@ class DataSourceIngester(Ingester):
         return ""
 
 
-    def ingest_data_from_path(self) -> str:
+    def ingest_data_from_path(self) -> Content:
         path = self.path
         data_type = self._check_data_type()
         if data_type == "":
@@ -28,7 +28,11 @@ class DataSourceIngester(Ingester):
             content = ""
             for page in pdf.pages:
                 content += page.extract_text()
-            return content
+            metadata = {}
+            if pdf.metadata is not None:
+                for key , val in pdf.metadata.items():
+                    metadata[key] = val
+            return Content(text = content , metadata = metadata)
 
         elif data_type == "md":
             return read_markdown(path)

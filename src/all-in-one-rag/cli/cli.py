@@ -98,23 +98,66 @@ def run_cli():
         embed_method = "Static Vectors (Word2Vec)"
     else:
         embed_method = "Sentence Transformers"
+
+    # 4b. Select LLM Chat Client
+    print(f"\n{YELLOW}{BOLD}Select the Chat Model / LLM Provider:{RESET}")
+    print(f"  {CYAN}1.{RESET} OpenAI (gpt-4o-mini)")
+    print(f"  {CYAN}2.{RESET} Google Gemini (gemini-1.5-flash)")
+    print(f"  {CYAN}3.{RESET} Offline / Mock Mode")
+    llm_choice = get_input("👉 Choice (1, 2, or 3)", "1")
+    
+    if llm_choice == "2":
+        llm_model = "Google Gemini"
+    elif llm_choice == "3":
+        llm_model = "Offline/Mock LLM"
+    else:
+        llm_model = "OpenAI GPT"
+
+    # Set environment variables for Config loader
+    os.environ["CHUNKING_METHOD"] = "fixed" if chunk_choice == "1" else "semantic"
+    if embed_choice == "2":
+        os.environ["EMBEDDING_METHOD"] = "openai"
+        os.environ["EMEDDING_METHOD"] = "openai"
+    elif embed_choice == "3":
+        os.environ["EMBEDDING_METHOD"] = "static"
+        os.environ["EMEDDING_METHOD"] = "static"
+    else:
+        os.environ["EMBEDDING_METHOD"] = "local"
+        os.environ["EMEDDING_METHOD"] = "local"
     
     # Print selection summary
     print(f"\n{GREEN}Configuration Saved:{RESET}")
     print(f"  • Source Path: {WHITE}{file_path}{RESET}")
     print(f"  • Chunking:    {WHITE}{chunk_model}{RESET}")
-    print(f"  • Embedding:   {WHITE}{embed_method}{RESET}\n")
+    print(f"  • Embedding:   {WHITE}{embed_method}{RESET}")
+    print(f"  • Chat LLM:    {WHITE}{llm_model}{RESET}\n")
 
-
-    
     # 5. Print a message to wait....
     print(f"{YELLOW}🔄 Building your RAG pipeline, please wait...{RESET}", end="", flush=True)
     for _ in range(4):
         time.sleep(0.6)
         print(".", end="", flush=True)
-    RAG = RAGBuilder().get_rag_pipeline(file_path)
+    RAG = RAGBuilder().get_rag_pipeline(file_path=file_path)
     RAG.build()
+    time.sleep(2)
     print(f" {GREEN}Done!{RESET}\n")
+    
+    # Instantiate LLM Chat Client and ChatManager
+    from chat.chat_client import OpenAIChatClient, GeminiChatClient, MockChatClient
+    from chat.chat_manager import ChatManager
+    
+    if llm_choice == "2":
+        chat_client = GeminiChatClient()
+    elif llm_choice == "3":
+        chat_client = MockChatClient()
+    else:
+        chat_client = OpenAIChatClient()
+        
+    chat_manager = ChatManager(
+        rag_pipeline=RAG,
+        chat_client=chat_client,
+        system_prompt="You are a helpful assistant. Answer the user's queries using the provided context when available."
+    )
     
     # 6. Say lets start chatting
     print(f"{GREEN}{BOLD}💬 Let's start chatting!{RESET} {DIM}(Type 'exit' or 'quit' to stop){RESET}\n")
@@ -129,10 +172,10 @@ def run_cli():
                 print(f"\n{YELLOW}Goodbye!{RESET}")
                 break
             
-            # Simple placeholder response flow
-            print(f"{MAGENTA}{BOLD}RAG >{RESET} Processing query: '{query}'...")
-            time.sleep(0.5)
-            print(f"{DIM}[Placeholder RAG response based on {file_path} using {chunk_model} & {embed_method}]{RESET}\n")
+            # Generate actual response
+            print(f"{MAGENTA}{BOLD}RAG >{RESET} ", end="", flush=True)
+            response = chat_manager.chat(query)
+            print(response + "\n")
             
         except KeyboardInterrupt:
             print(f"\n\n{YELLOW}Goodbye!{RESET}")
