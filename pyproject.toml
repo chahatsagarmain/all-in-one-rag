@@ -1,0 +1,24 @@
+[project]
+name = "all-in-one-rag"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "bs4>=0.0.2",
+    "dotenv>=0.9.9",
+    "markdown>=3.10.2",
+    "pydantic>=2.13.4",
+    "pydantic-settings>=2.14.2",
+    "pypdf>=6.14.2",
+]
+
+[tool.pyright]
+extraPaths = ["src/all-in-one-rag"]
+
+[tool.basedpyright]
+extraPaths = ["src/all-in-one-rag"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src/all-in-one-rag"]
+
