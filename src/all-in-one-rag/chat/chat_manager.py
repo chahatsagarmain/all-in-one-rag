@@ -1,6 +1,7 @@
 from typing import List, Dict, Any
 from models.chat import ChatClient
 from models.rag import AbstractRAGPipeline
+from cross_encoder.cross_encoder import CrossEncoder
 
 class ChatManager:
 
@@ -16,6 +17,7 @@ class ChatManager:
         self._system_prompt = system_prompt
         self._max_history = max_history
         self._messages: List[Dict[str, str]] = []
+        self._cross_encoder = CrossEncoder()
 
     def clear_history(self) -> None:
         """Reset the conversation memory."""
@@ -30,10 +32,16 @@ class ChatManager:
         Coordinate retrieval from RAG pipeline, construct prompt, invoke the LLM,
         and manage conversation memory.
         """
-        results = self._rag_pipeline.query(query_text, top_k=3)
+        results = self._rag_pipeline.query(query_text, top_k=20)
         
         if results:
-            context_text = "\n".join([f"- {r['text']}" for r in results])
+            try:
+                top_results = self._cross_encoder.get_tok_k_documents(query_text , results)
+                print("Cross encoder ranked successfully")
+                context_text = "\n".join([f"- {r}" for r in top_results])
+            except Exception as e:
+                print(f"\n[Warning] Cross-encoder ranking failed: {e}. Falling back to default retriever order.")
+                context_text = "\n".join([f"- {r['text']}" for r in results])
         else:
             context_text = "No relevant context found in database."
 
