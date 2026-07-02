@@ -137,7 +137,22 @@ def run_cli():
     for _ in range(4):
         time.sleep(0.6)
         print(".", end="", flush=True)
-    RAG = RAGBuilder().get_rag_pipeline(file_path=file_path)
+    
+    chunker_type = "fixed" if chunk_choice == "1" else "semantic"
+    if embed_choice == "2":
+        embedder_type = "openai"
+    elif embed_choice == "3":
+        embedder_type = "static"
+    else:
+        embedder_type = "local"
+
+    RAG = (
+        RAGBuilder()
+        .with_data_source(file_path)
+        .with_chunker(chunker_type)
+        .with_embedder(embedder_type)
+        .build()
+    )
     RAG.build()
     time.sleep(2)
     print(f" {GREEN}Done!{RESET}\n")
