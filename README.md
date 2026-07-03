@@ -20,7 +20,8 @@ Welcome to the **All-in-One RAG Pipeline**, a modular, high-performance Retrieva
 
 ## ✨ Features
 
-- 📂 **Multi-Source Ingester**: Seamlessly parse and extract text & metadata from `.pdf`, `.md`, and `.txt` files.
+- 📂 **Multi-Source Ingester**: Seamlessly parse and extract text & metadata from `.pdf`, `.md`, and `.txt` files, and transcribe audio files (`.mp3`, `.wav`, `.webm`) using GPU/CPU-accelerated **Faster-Whisper**.
+- 🧠 **Decoupled Model Caching**: Centralized `ModelManager` registry that lazily loads and caches heavy model weights (SentenceTransformers, Model2Vec, Whisper) in-memory, avoiding redundant disk reads and minimizing VRAM/RAM footprints.
 - ✂️ **Advanced Chunking**: Supports token-based fixed-size chunking and similarity-based semantic chunking powered by **Chonkie**.
 - 🧬 **Flexible Embeddings**:
   - **Local**: Hugging Face Sentence Transformers (`all-MiniLM-L6-v2`) running entirely locally.
@@ -51,13 +52,16 @@ Clone the repository and install packages:
 uv sync
 ```
 
-Create a `.env` file in the root directory and add your API keys:
+Create a `.env` file in the root directory and add your API keys & execution preferences:
 ```env
 # Optional, required if using OpenAI components
 OPENAI_API_KEY=your_openai_api_key_here
 
 # Optional, required if using Gemini components
 GEMINI_API_KEY=your_gemini_api_key_here
+
+# Optional, execution device for audio transcription (defaults to cpu, options: cpu, cuda)
+WHISPER_DEVICE=cpu
 ```
 
 ### 3. Spin up Weaviate Database
@@ -82,7 +86,7 @@ When you launch the CLI, you will be guided through 5 configuration stages:
 ### Stage 1: Document Selection
 Enter the path to your source document. Press Enter to use the default `README.md` file:
 ```text
-📂 Enter path to PDF / Markdown / TXT file [./README.md]: 
+📂 Enter path to file (PDF / MD / TXT / MP3 / WAV / WEBM) [./README.md]: 
 ```
 
 ### Stage 2: Chunking Strategy
