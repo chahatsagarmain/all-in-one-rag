@@ -1,5 +1,5 @@
 from typing import Type, Union
-from ingester.ingester import DataSourceIngester
+from ingester.ingester import DataSourceIngester , AudioIngester
 from chunker.chunker import FixedSizeChunker, SemanticChunker
 from embedder.embedder import LocalEmbedder, OpenAIEmbedder, StaticEmbedder
 from config.config import Config
@@ -15,13 +15,17 @@ class RAGBuilder:
         self._ingestor = None
         self._chunker_class = None
         self._embedder_class = None
+        self._path = ""
 
     def with_data_source(self, file_path: str) -> "RAGBuilder":
         ingestor_type = file_path.split(".")[-1]
         if ingestor_type in ["pdf", "txt", "md"]:
-            self._ingestor = DataSourceIngester(file_path)
+            self._ingestor = DataSourceIngester()
+        elif ingestor_type in ["mp3" , "wav" , "webm"]:
+            self._ingestor = AudioIngester()
         else:
             raise TypeError(f"Unsupported file format: {ingestor_type}")
+        self._path = file_path
         return self
 
     def with_chunker(self, chunker: Union[str, Type[Chunker]]) -> "RAGBuilder":
@@ -75,4 +79,4 @@ class RAGBuilder:
             else:
                 embedder = StaticEmbedder
 
-        return RAG(ingestor=self._ingestor, chunker_class=chunker, embedder_class=embedder)
+        return RAG(self._path , ingestor=self._ingestor, chunker_class=chunker, embedder_class=embedder)

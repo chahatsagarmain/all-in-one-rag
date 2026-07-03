@@ -60,4 +60,5 @@ coverage.xml
 .DS_Store
 Thumbs.db
 
-mlss.pdf
+*.pdf
+*.mp3
