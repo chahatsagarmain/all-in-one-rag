@@ -14,6 +14,9 @@
 ```
 
 Welcome to the **All-in-One RAG Pipeline**, a modular, high-performance Retrieval-Augmented Generation framework built from scratch to be completely plug-and-play. Swap chunkers, embeddings, storage layers, and chat providers dynamically directly from the command line!
+
+## System Architecture 
+
 <img width="6494" height="5231" alt="all-in-one" src="https://github.com/user-attachments/assets/61ed8ce4-d826-49d4-ba41-24df750f2fd1" />
 
 ---
