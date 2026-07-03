@@ -1,7 +1,7 @@
 from utils.utils import read_file , read_markdown
-from faster_whisper import WhisperModel
 from pypdf import PdfReader
 from models.ingestor import Ingester , Content
+from config.model_manager import ModelManager
 
 
 class DataSourceIngester(Ingester):
@@ -36,12 +36,7 @@ class DataSourceIngester(Ingester):
 class AudioIngester(Ingester):
 
     def __init__(self):
-        self._model = WhisperModel(
-            model_size_or_path="small",
-            device="cpu",
-            compute_type="int8",
-            cpu_threads=88
-        )
+        self._model = ModelManager.get_whisper_model()
 
     def _check_data_type(self, path):
         file_ext = path.split(".")[-1]

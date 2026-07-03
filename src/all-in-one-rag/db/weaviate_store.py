@@ -50,7 +50,6 @@ class WeaviateVectorStore(VectorStore):
                 Property(name="text", data_type=DataType.TEXT),
                 Property(name="metadata", data_type=DataType.TEXT),
             ],
-            vector_index_config=Configure.VectorIndex.hnsw()
         )
         print(f"Collection '{collection_name}' created successfully with vector dimension {vector_dim}.")
 

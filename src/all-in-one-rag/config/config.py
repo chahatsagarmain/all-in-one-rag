@@ -11,5 +11,6 @@ class Config(BaseSettings):
     emedding_method : Annotated[str , Field()] = os.getenv("EMBEDDING_METHOD") or "static"
     vector_store    : Annotated[str , Field()] = os.getenv("VECTORE_STORE") or "pgvector"
     system_prompt   : Annotated[str , Field()] = os.getenv("SYSTEM_PROMPT") or "ANSWER THE QUERY WITH THE GIVEN CONTEXT"
+    whisper_device  : Annotated[str , Field()] = os.getenv("WHISPER_DEVICE") or "cpu"
 
 

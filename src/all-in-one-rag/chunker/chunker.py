@@ -1,6 +1,8 @@
 from models.chunker import Chunker
 from chonkie import TokenChunker, SemanticChunker as ChonkieSemanticChunker
 from models.ingestor import Content
+from config.model_manager import ModelManager
+from chonkie.embeddings import Model2VecEmbeddings
 
 class FixedSizeChunker(Chunker):
     
@@ -23,7 +25,8 @@ class FixedSizeChunker(Chunker):
 class SemanticChunker(Chunker):
     def __init__(self, content: Content, embedding_model: str = "minishlab/potion-base-32M", threshold: float = 0.8, chunk_size: int = 2048):
         super().__init__(content)
-        self._embedding_model = embedding_model
+        raw_model = ModelManager.get_static_model(embedding_model)
+        self._embedding_model = Model2VecEmbeddings(model=raw_model)
         self._threshold = threshold
         self._chunk_size = chunk_size
 
