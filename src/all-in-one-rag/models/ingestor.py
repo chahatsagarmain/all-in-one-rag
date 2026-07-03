@@ -9,9 +9,9 @@ class Content(BaseModel):
 class Ingester(ABC):
 
     @abstractmethod
-    def ingest_data_from_path(self) -> Content:
+    def ingest_data_from_path(self , path : str) -> Content:
         pass
 
     @abstractmethod
-    def _check_data_type(self) -> str:
+    def _check_data_type(self , path : str) -> str:
         pass

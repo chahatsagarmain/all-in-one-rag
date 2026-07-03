@@ -7,14 +7,15 @@ from db.weaviate_store import WeaviateVectorStore
 
 class RAG(AbstractRAGPipeline):
 
-    def __init__(self, ingestor: Ingester, chunker_class: Type[Chunker] | None = None, embedder_class: Type[Embedder] | None = None):
+    def __init__(self, path : str , ingestor: Ingester, chunker_class: Type[Chunker] | None = None, embedder_class: Type[Embedder] | None = None):
         self.__ingestor = ingestor
         self.__chunker_class = chunker_class
         self.__embedder_class = embedder_class
+        self._path = path
         self.__store = WeaviateVectorStore()
     
     def build(self):
-        content = self.__ingestor.ingest_data_from_path()
+        content = self.__ingestor.ingest_data_from_path(self._path)
         print("Ingested content successfully.")
         
         chunks_data: Dict[str, Any] | None = None
@@ -31,7 +32,6 @@ class RAG(AbstractRAGPipeline):
             embeddings = embeddings_data["embeddings"]
             print(f"Generated {len(embeddings)} embeddings of dimension {len(embeddings[0]) if embeddings else 0}.")
             
-            # Persist in Weaviate
             try:
                 collection_name = "DocumentChunk"
                 vector_dim = len(embeddings[0]) if embeddings else 0
