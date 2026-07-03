@@ -73,9 +73,9 @@ def run_cli():
     # 1. Says lets build your rag first
     print(f"{GREEN}{BOLD}✨ Let's build your RAG pipeline first! ✨{RESET}\n")
     
-    # 2. Ask for a path of pdf / markdown / txt
+    # 2. Ask for a path of pdf / markdown / txt or audio (mp3 / wav / webm)
     default_path = "./README.md"
-    file_path = get_input("📂 Enter path to PDF / Markdown / TXT file", default_path)
+    file_path = get_input("📂 Enter path to file (PDF / MD / TXT / MP3 / WAV / WEBM)", default_path)
     
     # 3. Select chunking model
     print(f"\n{YELLOW}{BOLD}Select the Chunking Model:{RESET}")
