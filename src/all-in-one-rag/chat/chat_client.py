@@ -62,6 +62,50 @@ class GeminiChatClient(ChatClient):
         return response.text or ""
 
 
+class OllamaChatClient(ChatClient):
+
+    def __init__(self, model_name: str = "llama3.2", base_url: str = "http://127.0.0.1:11434"):
+        self._model_name = model_name
+        self._base_url = base_url.rstrip("/").removesuffix("/v1")
+
+    def generate_response(self, system_prompt: str, messages: List[Dict[str, str]]) -> str:
+        import urllib.request
+        import json
+        
+        url = f"{self._base_url}/api/chat"
+        
+        payload_messages = [{"role": "system", "content": system_prompt}]
+        for msg in messages:
+            role = "user" if msg["role"] == "user" else "assistant"
+            payload_messages.append({"role": role, "content": msg["content"]})
+            
+        data = {
+            "model": self._model_name,
+            "messages": payload_messages,
+            "stream": False
+        }
+        
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(data).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST"
+        )
+        
+        try:
+            with urllib.request.urlopen(req) as response:
+                res_data = json.loads(response.read().decode("utf-8"))
+                return res_data.get("message", {}).get("content", "")
+        except Exception as e:
+            return (
+                f"[Error connecting to local Ollama server at {self._base_url}]: {e}\n\n"
+                f"💡 Troubleshooting Tips:\n"
+                f"1. Make sure Ollama is installed and running (`ollama serve` or desktop app running).\n"
+                f"2. Pull the model first: `ollama pull {self._model_name}`\n"
+                f"3. If using Windows/macOS, try using 'http://127.0.0.1:11434' instead of 'http://localhost:11434' (IPv6 resolution of 'localhost' to '::1' may fail if Ollama is only listening on IPv4)."
+            )
+
+
 class MockChatClient(ChatClient):
 
     def generate_response(self, system_prompt: str, messages: List[Dict[str, str]]) -> str:

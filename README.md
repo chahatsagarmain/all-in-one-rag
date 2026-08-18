@@ -30,11 +30,14 @@ Welcome to the **All-in-One RAG Pipeline**, a modular, high-performance Retrieva
   - **Local**: Hugging Face Sentence Transformers (`all-MiniLM-L6-v2`) running entirely locally.
   - **OpenAI**: Cloud-based embeddings using OpenAI's API.
   - **Static**: Super-fast word-embedding projections using local `Model2Vec` (Potion).
-- 🗄️ **Persistent Vector Store**: Custom batch uploading and similarity searching in **Weaviate** running via Docker.
+- 🗄️ **Flexible Vector Storage**:
+  - **Weaviate**: Custom batch uploading and similarity/hybrid searching running via Docker.
+  - **Local File (SimpleStore)**: Zero-dependency local file storage backend using NumPy and Python pickle, enabling completely database-free, Docker-free offline operations.
 - 💬 **Conversational Chat**:
   - Chat memory preserving rolling conversation history.
   - **OpenAI** client integration (GPT models).
   - **Google Gemini** client integration (Gemini 1.5 Flash) via the modern `google-genai` SDK.
+  - **Ollama** integration for local offline LLMs (e.g. Llama 3.2, Qwen 2) running locally.
   - **Mock Client** fallback for offline execution.
 
 ---

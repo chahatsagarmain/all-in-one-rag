@@ -103,15 +103,33 @@ def run_cli():
     print(f"\n{YELLOW}{BOLD}Select the Chat Model / LLM Provider:{RESET}")
     print(f"  {CYAN}1.{RESET} OpenAI (gpt-4o-mini)")
     print(f"  {CYAN}2.{RESET} Google Gemini (gemini-1.5-flash)")
-    print(f"  {CYAN}3.{RESET} Offline / Mock Mode")
-    llm_choice = get_input("👉 Choice (1, 2, or 3)", "1")
+    print(f"  {CYAN}3.{RESET} Ollama (Local LLM)")
+    print(f"  {CYAN}4.{RESET} Offline / Mock Mode")
+    llm_choice = get_input("👉 Choice (1, 2, 3, or 4)", "1")
     
+    ollama_model = "llama3.2"
     if llm_choice == "2":
         llm_model = "Google Gemini"
     elif llm_choice == "3":
+        llm_model = "Ollama Local LLM"
+        ollama_model = get_input("🤖 Enter Ollama Model Name", "llama3.2")
+    elif llm_choice == "4":
         llm_model = "Offline/Mock LLM"
     else:
         llm_model = "OpenAI GPT"
+
+    # 4c. Select Vector Storage
+    print(f"\n{YELLOW}{BOLD}Select the Vector Storage:{RESET}")
+    print(f"  {CYAN}1.{RESET} Weaviate (Docker)")
+    print(f"  {CYAN}2.{RESET} Local File Fallback (No-Docker)")
+    store_choice = get_input("👉 Choice (1 or 2)", "1")
+    
+    if store_choice == "2":
+        store_method = "Local File"
+        store_type = "simple"
+    else:
+        store_method = "Weaviate"
+        store_type = "weaviate"
 
     # Set environment variables for Config loader
     os.environ["CHUNKING_METHOD"] = "fixed" if chunk_choice == "1" else "semantic"
@@ -125,12 +143,15 @@ def run_cli():
         os.environ["EMBEDDING_METHOD"] = "local"
         os.environ["EMEDDING_METHOD"] = "local"
     
+    os.environ["VECTOR_STORE"] = store_type
+    
     # Print selection summary
     print(f"\n{GREEN}Configuration Saved:{RESET}")
-    print(f"  • Source Path: {WHITE}{file_path}{RESET}")
-    print(f"  • Chunking:    {WHITE}{chunk_model}{RESET}")
-    print(f"  • Embedding:   {WHITE}{embed_method}{RESET}")
-    print(f"  • Chat LLM:    {WHITE}{llm_model}{RESET}\n")
+    print(f"  • Source Path:  {WHITE}{file_path}{RESET}")
+    print(f"  • Chunking:     {WHITE}{chunk_model}{RESET}")
+    print(f"  • Embedding:    {WHITE}{embed_method}{RESET}")
+    print(f"  • Vector Store: {WHITE}{store_method}{RESET}")
+    print(f"  • Chat LLM:     {WHITE}{llm_model}{RESET}\n")
 
     # 5. Print a message to wait....
     print(f"{YELLOW}🔄 Building your RAG pipeline, please wait...{RESET}", end="", flush=True)
@@ -151,6 +172,7 @@ def run_cli():
         .with_data_source(file_path)
         .with_chunker(chunker_type)
         .with_embedder(embedder_type)
+        .with_vector_store(store_type)
         .build()
     )
     RAG.build()
@@ -158,12 +180,14 @@ def run_cli():
     print(f" {GREEN}Done!{RESET}\n")
     
     # Instantiate LLM Chat Client and ChatManager
-    from chat.chat_client import OpenAIChatClient, GeminiChatClient, MockChatClient
+    from chat.chat_client import OpenAIChatClient, GeminiChatClient, OllamaChatClient, MockChatClient
     from chat.chat_manager import ChatManager
     
     if llm_choice == "2":
         chat_client = GeminiChatClient()
     elif llm_choice == "3":
+        chat_client = OllamaChatClient(model_name=ollama_model)
+    elif llm_choice == "4":
         chat_client = MockChatClient()
     else:
         chat_client = OpenAIChatClient()

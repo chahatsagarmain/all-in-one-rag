@@ -9,7 +9,7 @@ load_dotenv(".env")
 class Config(BaseSettings):
     chunking_method : Annotated[str , Field()] = os.getenv("CHUNKING_METHOD") or "fixed"
     emedding_method : Annotated[str , Field()] = os.getenv("EMBEDDING_METHOD") or "static"
-    vector_store    : Annotated[str , Field()] = os.getenv("VECTORE_STORE") or "pgvector"
+    vector_store    : Annotated[str , Field()] = os.getenv("VECTOR_STORE") or os.getenv("VECTORE_STORE") or "weaviate"
     system_prompt   : Annotated[str , Field()] = os.getenv("SYSTEM_PROMPT") or "ANSWER THE QUERY WITH THE GIVEN CONTEXT"
     whisper_device  : Annotated[str , Field()] = os.getenv("WHISPER_DEVICE") or "cpu"
 

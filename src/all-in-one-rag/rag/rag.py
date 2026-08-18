@@ -3,16 +3,28 @@ from models.rag import AbstractRAGPipeline
 from typing import Type, Dict, Any
 from models.chunker import Chunker
 from models.embedder import Embedder
-from db.weaviate_store import WeaviateVectorStore
+from models.vector_store import VectorStore
 
 class RAG(AbstractRAGPipeline):
 
-    def __init__(self, path : str , ingestor: Ingester, chunker_class: Type[Chunker] | None = None, embedder_class: Type[Embedder] | None = None):
+    def __init__(
+        self, 
+        path: str, 
+        ingestor: Ingester, 
+        chunker_class: Type[Chunker] | None = None, 
+        embedder_class: Type[Embedder] | None = None,
+        vector_store_class: Type[VectorStore] | None = None
+    ):
         self.__ingestor = ingestor
         self.__chunker_class = chunker_class
         self.__embedder_class = embedder_class
         self._path = path
-        self.__store = WeaviateVectorStore()
+        
+        if vector_store_class is None:
+            from db.weaviate_store import WeaviateVectorStore
+            self.__store = WeaviateVectorStore()
+        else:
+            self.__store = vector_store_class()
     
     def build(self):
         content = self.__ingestor.ingest_data_from_path(self._path)
@@ -45,12 +57,12 @@ class RAG(AbstractRAGPipeline):
                         embeddings=embeddings,
                         metadata=metadata_list
                     )
-                    print("Successfully persisted all chunks in Weaviate!")
+                    print(f"Successfully persisted all chunks in {self.__store.__class__.__name__}!")
                 else:
-                    print("Skipping Weaviate storage: No embeddings generated.")
+                    print("Skipping storage: No embeddings generated.")
             except Exception as e:
-                print(f"\n[Warning] Could not persist data in Weaviate: {e}")
-                print("Make sure your Weaviate docker container is running (use 'docker compose up -d').\n")
+                print(f"\n[Warning] Could not persist data in vector store: {e}")
+                print("If using Weaviate, make sure your docker container is running (use 'docker compose up -d').\n")
 
     def query(self, query_text: str, top_k: int = 5) -> list:
         if self.__embedder_class is None:
