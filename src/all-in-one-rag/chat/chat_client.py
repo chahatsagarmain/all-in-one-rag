@@ -38,6 +38,7 @@ class GeminiChatClient(ChatClient):
         return self._client
 
     def generate_response(self, system_prompt: str, messages: List[Dict[str, str]]) -> str:
+        import time
         client = self._get_client()
         
         contents = []
@@ -54,12 +55,25 @@ class GeminiChatClient(ChatClient):
             system_instruction=system_prompt
         )
         
-        response = client.models.generate_content(
-            model=self._model_name,
-            contents=contents,
-            config=config
-        )
-        return response.text or ""
+        max_retries = 5
+        backoff_delay = 2.0
+        for attempt in range(max_retries):
+            try:
+                response = client.models.generate_content(
+                    model=self._model_name,
+                    contents=contents,
+                    config=config
+                )
+                return response.text or ""
+            except Exception as e:
+                err_str = str(e)
+                if "RESOURCE_EXHAUSTED" in err_str or "429" in err_str:
+                    if attempt < max_retries - 1:
+                        time.sleep(backoff_delay)
+                        backoff_delay *= 2
+                        continue
+                raise e
+        return ""
 
 
 class OllamaChatClient(ChatClient):

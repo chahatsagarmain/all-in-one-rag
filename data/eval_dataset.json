@@ -1,0 +1,37 @@
+[
+  {
+    "query": "What types of file formats can the Multi-Source Ingester process?",
+    "reference_context": "Seamlessly parse and extract text & metadata from .pdf, .md, and .txt files, and transcribe audio files (.mp3, .wav, .webm) using GPU/CPU-accelerated Fa",
+    "ground_truth": "The Multi-Source Ingester can process text and metadata from .pdf, .md, and .txt files, as well as transcribe .mp3, .wav, and .webm audio files."
+  },
+  {
+    "query": "What are the three different types of flexible embedding options supported?",
+    "reference_context": "Local: Hugging Face Sentence Transformers (all-MiniLM-L6-v2) running entirely locally. OpenAI: Cloud-based embeddings using OpenAI's API. Static: Super-fast word-embedding projections using local Model2Vec (Potion).",
+    "ground_truth": "The three flexible embedding options are: 1) Local embeddings using Hugging Face Sentence Transformers (all-MiniLM-L6-v2), 2) OpenAI cloud-based embeddings, and 3) Static embeddings using local Model2Vec (Potion) for fast word-embedding projections."
+  },
+  {
+    "query": "What are the available options for vector storage in the Potion system?",
+    "reference_context": "Weaviate: Custom batch uploading and similarity/hybrid searching running via Docker. Local File (SimpleStore): Zero-dependency local file storage backend using NumPy and Python pickle, enabling completely database-free, Docker-free offline operations.",
+    "ground_truth": "The Potion system offers two vector storage options: Weaviate, which uses Docker for batch uploading and hybrid searching, and SimpleStore, a zero-dependency local file storage backend that utilizes NumPy and Python pickle to support database-free and Docker-free offline operations."
+  },
+  {
+    "query": "What are the prerequisite software requirements for installing the CLI?",
+    "reference_context": "Ensure you have the following installed:\nDocker & Docker Desktop\n\nAstral uv (recommended fast Python package manager) or standard Python 3.11+",
+    "ground_truth": "To install the CLI, you must have Docker & Docker Desktop installed, as well as either Astral uv (a recommended fast Python package manager) or standard Python version 3.11 or higher."
+  },
+  {
+    "query": "How do you start the RAG CLI application after launching the Weaviate database?",
+    "reference_context": "Run the application:```bashuv run src/all-in-one-rag/main.py```",
+    "ground_truth": "To start the RAG CLI application, you must run the command 'uv run src/all-in-one-rag/main.py' in your terminal."
+  },
+  {
+    "query": "What are the available options for selecting a Chat LLM provider in Stage 4?",
+    "reference_context": "Select the Chat Model / LLM Provider:\nOpenAI (gpt-4o-mini)\n\nGoogle Gemini (gemini-1.5-flash)\n\nOffline / Mock Mode",
+    "ground_truth": "In Stage 4, you can select from three Chat LLM providers: OpenAI (using gpt-4o-mini), Google Gemini (using gemini-1.5-flash), or an Offline / Mock Mode."
+  },
+  {
+    "query": "What is All-in-One RAG?",
+    "reference_context": "All-in-One RAG is a modular, plug-and-play framework designed to let you dynamically swap...",
+    "ground_truth": "All-in-One RAG is a modular, plug-and-play framework that allows users to dynamically swap components."
+  }
+]

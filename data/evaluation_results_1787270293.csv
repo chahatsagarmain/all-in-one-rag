@@ -1,0 +1,44 @@
+Configuration,Query,Ground Truth,Retrieved Chunks,LLM Response,Build Time (s),Retrieval Latency (s),Generation Latency (s),Total Latency (s),Recall@5,Faithfulness,Relevance
+Local_Fixed_SimpleStore,What types of file formats can the Multi-Source Ingester process?,"The Multi-Source Ingester can process text and metadata from .pdf, .md, and .txt files, as well as transcribe .mp3, .wav, and .webm audio files.",5,"The Multi-Source Ingester can process the following file formats:
+
+*   **.pdf**
+*   **.md**
+*   **.txt**",6.4343568999902345,0.02221959998132661,12.374374800012447,12.396594399993774,1.0,1.0,1.0
+Local_Fixed_SimpleStore,What are the three different types of flexible embedding options supported?,"The three flexible embedding options are: 1) Local embeddings using Hugging Face Sentence Transformers (all-MiniLM-L6-v2), 2) OpenAI cloud-based embeddings, and 3) Static embeddings using local Model2Vec (Potion) for fast word-embedding projections.",5,"Based on the provided context, the three different types of flexible embedding options are:
+
+1.  **Local:** Hugging Face Sentence Transformers (all-MiniLM-L6-v2) running locally.
+2.  **OpenAI Embeddings:** Cloud API (1536d).
+3.  **Static Vectors:** Ultra-fast local Model2Vec (Potion).",6.4343568999902345,0.028084700024919584,9.4751584000187,9.503243100043619,1.0,0.8,1.0
+Local_Fixed_SimpleStore,What are the available options for vector storage in the Potion system?,"The Potion system offers two vector storage options: Weaviate, which uses Docker for batch uploading and hybrid searching, and SimpleStore, a zero-dependency local file storage backend that utilizes NumPy and Python pickle to support database-free and Docker-free offline operations.",5,"Based on the provided text, the available options for vector storage in the Potion system are:
+
+*   **Weaviate** (supports 384d models)
+*   **OpenAI Embeddings** (Cloud API - 1536d)
+*   **Static Vectors** (Ultra-fast local Model2Vec)",6.4343568999902345,0.02147270002751611,7.06351929999073,7.0849920000182465,0.0,0.0,1.0
+Local_Semantic_SimpleStore,What types of file formats can the Multi-Source Ingester process?,"The Multi-Source Ingester can process text and metadata from .pdf, .md, and .txt files, as well as transcribe .mp3, .wav, and .webm audio files.",5,"The Multi-Source Ingester can process the following file formats:
+
+*   **Documents:** .pdf, .md, and .txt
+*   **Audio:** .mp3, .wav, and .webm",1.602693699998781,0.021452900022268295,5.570628199988278,5.592081100010546,1.0,1.0,1.0
+Local_Semantic_SimpleStore,What are the three different types of flexible embedding options supported?,"The three flexible embedding options are: 1) Local embeddings using Hugging Face Sentence Transformers (all-MiniLM-L6-v2), 2) OpenAI cloud-based embeddings, and 3) Static embeddings using local Model2Vec (Potion) for fast word-embedding projections.",5,"The three different types of flexible embedding options supported are:
+
+1.  **Local (Hugging Face):** Sentence Transformers (all-MiniLM-L6-v2) running entirely locally.
+2.  **OpenAI:** Cloud-based embeddings using OpenAI's API.
+3.  **Static:** Super-fast word-embedding projections using local Model2Vec (Potion).",1.602693699998781,0.024660499999299645,4.616918199986685,4.641578699985985,1.0,1.0,1.0
+Local_Semantic_SimpleStore,What are the available options for vector storage in the Potion system?,"The Potion system offers two vector storage options: Weaviate, which uses Docker for batch uploading and hybrid searching, and SimpleStore, a zero-dependency local file storage backend that utilizes NumPy and Python pickle to support database-free and Docker-free offline operations.",5,"In the Potion system, there are two available options for vector storage:
+
+*   **Weaviate:** A custom batch uploading and similarity/hybrid searching solution that runs via Docker.
+*   **Local File (SimpleStore):** A zero-dependency local file storage backend that utilizes NumPy and Python pickle, allowing for database-free and Docker-free offline operations.",1.602693699998781,0.024924500001361594,13.935381199989934,13.960305699991295,1.0,0.0,1.0
+Static_Fixed_SimpleStore,What types of file formats can the Multi-Source Ingester process?,"The Multi-Source Ingester can process text and metadata from .pdf, .md, and .txt files, as well as transcribe .mp3, .wav, and .webm audio files.",5,"The Multi-Source Ingester can process the following file formats:
+
+*   **.pdf**
+*   **.md**
+*   **.txt**",0.04940459999488667,0.0020972000202164054,7.0551796999934595,7.057276900013676,1.0,1.0,1.0
+Static_Fixed_SimpleStore,What are the three different types of flexible embedding options supported?,"The three flexible embedding options are: 1) Local embeddings using Hugging Face Sentence Transformers (all-MiniLM-L6-v2), 2) OpenAI cloud-based embeddings, and 3) Static embeddings using local Model2Vec (Potion) for fast word-embedding projections.",5,"Based on the context provided, the three flexible embedding options are:
+
+1.  **Local:** Hugging Face Sentence Transformers (all-MiniLM-L6-v2) running entirely local.
+2.  **Model2Vec (Potion):** Word-embedding projections using local Model2Vec (Potion).
+3.  **OpenAI Embeddings:** Cloud API (1536d).",0.04940459999488667,0.0022406000061891973,2.038544900016859,2.0407855000230484,0.0,0.0,1.0
+Static_Fixed_SimpleStore,What are the available options for vector storage in the Potion system?,"The Potion system offers two vector storage options: Weaviate, which uses Docker for batch uploading and hybrid searching, and SimpleStore, a zero-dependency local file storage backend that utilizes NumPy and Python pickle to support database-free and Docker-free offline operations.",5,"Based on the provided context, the available options for vector storage in the Potion system are:
+
+*   **Weaviate** (supports models like 384d)
+*   **OpenAI Embeddings** (Cloud API - 1536d)
+*   **Static Vectors** (Ultra-fast local Model2Vec)",0.04940459999488667,0.0020509999885689467,3.798495199996978,3.800546199985547,1.0,0.0,1.0
