@@ -1,0 +1,23 @@
+{
+  "Local_Fixed_SimpleStore": {
+    "Avg Retrieval Latency (s)": 0.02392566667792077,
+    "Avg Generation Latency (s)": 9.637684166673958,
+    "Recall@5": 0.6666666666666666,
+    "Faithfulness": 0.6,
+    "Relevance": 1.0
+  },
+  "Local_Semantic_SimpleStore": {
+    "Avg Retrieval Latency (s)": 0.023679300007643178,
+    "Avg Generation Latency (s)": 8.040975866654966,
+    "Recall@5": 1.0,
+    "Faithfulness": 0.6666666666666666,
+    "Relevance": 1.0
+  },
+  "Static_Fixed_SimpleStore": {
+    "Avg Retrieval Latency (s)": 0.0021296000049915165,
+    "Avg Generation Latency (s)": 4.297406600002432,
+    "Recall@5": 0.6666666666666666,
+    "Faithfulness": 0.3333333333333333,
+    "Relevance": 1.0
+  }
+}

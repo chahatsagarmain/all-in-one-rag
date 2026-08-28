@@ -62,3 +62,7 @@ Thumbs.db
 
 *.pdf
 *.mp3
+
+*.pkl
+
+vector_store.pkl
